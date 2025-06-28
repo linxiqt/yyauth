@@ -1,0 +1,19 @@
+services:
+  yyauth:
+    build: .
+    container_name: yyauth
+    restart: always
+    depends_on:
+      - mysql
+    network_mode: host
+
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Linxi200710
+      MYSQL_DATABASE: auth
+      MYSQL_USER: auth
+      MYSQL_PASSWORD: eLinxi200710
+    network_mode: host
