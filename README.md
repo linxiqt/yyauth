@@ -30,8 +30,9 @@ docker run -d \
   -e DB_PASSWORD=Linxi200710 \
   ghcr.nju.edu.cn/linxiqt/yyauth
 ```
+---
 
-`docker-compose.yml`
+`docker-compose.yml`方式
 ```
 services:
   yyauth:
