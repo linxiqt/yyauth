@@ -4735,13 +4735,32 @@ function defineNitroPlugin(def) {
 const CONFIG_PATH = process.cwd() + "/server/mysql.json";
 function getConfig() {
   try {
+    // 优先使用环境变量（Docker、系统环境变量）
+    if (
+      process.env.DB_HOST ||
+      process.env.DB_PORT ||
+      process.env.DB_NAME ||
+      process.env.DB_USER ||
+      process.env.DB_PASSWORD
+    ) {
+      return {
+        DB_HOST: process.env.DB_HOST || "localhost",
+        DB_PORT: parseInt(process.env.DB_PORT || "3306", 10),
+        DB_NAME: process.env.DB_NAME || "auth",
+        DB_USER: process.env.DB_USER || "root",
+        DB_PASSWORD: process.env.DB_PASSWORD || ""
+      };
+    }
+
+    // 否则尝试读取 mysql.json 文件
     if (!fs.existsSync(CONFIG_PATH)) {
       return null;
     }
+
     const configContent = fs.readFileSync(CONFIG_PATH, "utf8");
     return JSON.parse(configContent);
   } catch (error) {
-    console.error("\u8BFB\u53D6\u6570\u636E\u5E93\u914D\u7F6E\u51FA\u9519:", error);
+    console.error("读取数据库配置出错:", error);
     return null;
   }
 }
